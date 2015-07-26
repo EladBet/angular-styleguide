@@ -1,6 +1,6 @@
 # Quiliup Style Guide
 
-*Quiliup style guide for thr R&D team by [@EladBet](//http://visionbi-cloud.appspot.com/meet-the-team.php?srchby=Batit)*
+*Quiliup style guide for thr R&D team by [@EladBet](//visionbi-cloud.appspot.com/meet-the-team.php?srchby=Batit)*
 
 If you are looking for an opinionated style guide for syntax, conventions, and structuring Angular applications, then step right in. These styles are based on my development experience with [Angular](//angularjs.org), presentations, [Pluralsight training courses](http://pluralsight.com/training/Authors/Details/john-papa) and working in teams.
 
