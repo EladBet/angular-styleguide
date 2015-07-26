@@ -1,15 +1,14 @@
 # Quiliup Style Guide
 
-*Quiliup style guide for thr R&D team by [@EladBet](//visionbi-cloud.appspot.com/meet-the-team.php?srchby=Batit)*
+*Quiliup style guide for thr R&D team by [@EladBet](//il.linkedin.com/pub/elad-betite/84/981/73)*
 
-If you are looking for an opinionated style guide for syntax, conventions, and structuring Angular applications, then step right in. These styles are based on my development experience with [Angular](//angularjs.org), presentations, [Pluralsight training courses](http://pluralsight.com/training/Authors/Details/john-papa) and working in teams.
+ These styles are based on [angular-styleguide](//github.com/johnpapa/angular-styleguide.git)  by [@John_Papa](//twitter.com/john_papa) and my development experience with [Angular](//angularjs.org),  and working in a team.
 
-The purpose of this style guide is to provide guidance on building Angular applications by showing the conventions I use and, more importantly, why I choose them.
+The purpose of this style guide is to provide guidance on building and improving quiliup applications by showing the conventions we use and, more importantly, why we choose them.
 
 ## Table of Contents
 
   1. [Single Responsibility](#single-responsibility)
-  1. [IIFE](#iife)
   1. [Modules](#modules)
   1. [Controllers](#controllers)
   1. [Services](#services)
@@ -96,71 +95,6 @@ The purpose of this style guide is to provide guidance on building Angular appli
 
 **[Back to top](#table-of-contents)**
 
-## IIFE
-### JavaScript Closures
-###### [Style [Y010](#style-y010)]
-
-  - Wrap Angular components in an Immediately Invoked Function Expression (IIFE).
-
-  *Why?*: An IIFE removes variables from the global scope. This helps prevent variables and function declarations from living longer than expected in the global scope, which also helps avoid variable collisions.
-
-  *Why?*: When your code is minified and bundled into a single file for deployment to a production server, you could have collisions of variables and many global variables. An IIFE protects you against both of these by providing variable scope for each file.
-
-  ```javascript
-  /* avoid */
-  // logger.js
-  angular
-      .module('app')
-      .factory('logger', logger);
-
-  // logger function is added as a global variable
-  function logger() { }
-
-  // storage.js
-  angular
-      .module('app')
-      .factory('storage', storage);
-
-  // storage function is added as a global variable
-  function storage() { }
-  ```
-
-  ```javascript
-  /**
-   * recommended
-   *
-   * no globals are left behind
-   */
-
-  // logger.js
-  (function() {
-      'use strict';
-
-      angular
-          .module('app')
-          .factory('logger', logger);
-
-      function logger() { }
-  })();
-
-  // storage.js
-  (function() {
-      'use strict';
-
-      angular
-          .module('app')
-          .factory('storage', storage);
-
-      function storage() { }
-  })();
-  ```
-
-  - Note: For brevity only, the rest of the examples in this guide may omit the IIFE syntax.
-
-  - Note: IIFE's prevent test code from reaching private members like regular expressions or helper functions which are often good to unit test directly on their own. However you can test these through accessible members or by exposing them through their own component. For example placing helper functions, regular expressions or constants in their own factory or constant.
-
-**[Back to top](#table-of-contents)**
-
 ## Modules
 
 ### Avoid Naming Collisions
@@ -224,52 +158,6 @@ The purpose of this style guide is to provide guidance on building Angular appli
   function SomeController() { }
   ```
 
-### Setting vs Getting
-###### [Style [Y023](#style-y023)]
-
-  - Only set once and get for all other instances.
-
-  *Why?*: A module should only be created once, then retrieved from that point and after.
-
-    - Use `angular.module('app', []);` to set a module.
-    - Use `angular.module('app');` to get a module.
-
-### Named vs Anonymous Functions
-###### [Style [Y024](#style-y024)]
-
-  - Use named functions instead of passing an anonymous function in as a callback.
-
-  *Why?*: This produces more readable code, is much easier to debug, and reduces the amount of nested callback code.
-
-  ```javascript
-  /* avoid */
-  angular
-      .module('app')
-      .controller('Dashboard', function() { })
-      .factory('logger', function() { });
-  ```
-
-  ```javascript
-  /* recommended */
-
-  // dashboard.js
-  angular
-      .module('app')
-      .controller('Dashboard', Dashboard);
-
-  function Dashboard() { }
-  ```
-
-  ```javascript
-  // logger.js
-  angular
-      .module('app')
-      .factory('logger', logger);
-
-  function logger() { }
-  ```
-
-**[Back to top](#table-of-contents)**
 
 ## Controllers
 
@@ -427,7 +315,6 @@ The purpose of this style guide is to provide guidance on building Angular appli
       }
   ```
 
-    ![Controller Using "Above the Fold"](https://raw.githubusercontent.com/johnpapa/angular-styleguide/master/assets/above-the-fold-1.png)
 
   Note: If the function is a 1 liner consider keeping it right up top, as long as readability is not affected.
 
@@ -1098,14 +985,6 @@ The purpose of this style guide is to provide guidance on building Angular appli
 
     *Why?*: DOM manipulation can be difficult to test, debug, and there are often better ways (e.g. CSS, animations, templates)
 
-### Provide a Unique Directive Prefix
-###### [Style [Y073](#style-y073)]
-
-  - Provide a short, unique and descriptive directive prefix such as `acmeSalesCustomerInfo` which would be declared in HTML as `acme-sales-customer-info`.
-
-    *Why?*: The unique short prefix identifies the directive's context and origin. For example a prefix of `cc-` may indicate that the directive is part of a CodeCamper app while `acme-` may indicate a directive for the Acme company.
-
-    Note: Avoid `ng-` as these are reserved for Angular directives. Research widely used directives to avoid naming conflicts, such as `ion-` for the [Ionic Framework](http://ionicframework.com/).
 
 ### Restrict to Elements and Attributes
 ###### [Style [Y074](#style-y074)]
@@ -1301,13 +1180,12 @@ The purpose of this style guide is to provide guidance on building Angular appli
 ### Controller Activation Promises
 ###### [Style [Y080](#style-y080)]
 
-  - Resolve start-up logic for a controller in an `activate` function.
+  - Resolve start-up logic for a controller in an `init` function.
 
     *Why?*: Placing start-up logic in a consistent place in the controller makes it easier to locate, more consistent to test, and helps avoid spreading out the activation logic across the controller.
 
-    *Why?*: The controller `activate` makes it convenient to re-use the logic for a refresh for the controller/View, keeps the logic together, gets the user to the View faster, makes animations easy on the `ng-view` or `ui-view`, and feels snappier to the user.
+    *Why?*: The controller `init` makes it convenient to re-use the logic for a refresh for the controller/View, keeps the logic together, gets the user to the View faster, makes animations easy on the `ng-view` or `ui-view`, and feels snappier to the user.
 
-    Note: If you need to conditionally cancel the route before you start use the controller, use a [route resolve](#style-y081) instead.
 
   ```javascript
   /* avoid */
@@ -1330,11 +1208,11 @@ The purpose of this style guide is to provide guidance on building Angular appli
       vm.avengers = [];
       vm.title = 'Avengers';
 
-      activate();
+      init();
 
       ////////////
 
-      function activate() {
+      function init() {
           return dataservice.getAvengers().then(function(data) {
               vm.avengers = data;
               return vm.avengers;
@@ -1474,114 +1352,17 @@ The purpose of this style guide is to provide guidance on building Angular appli
     angular.module('app').controller('Dashboard', d);function d(a, b) { }
     ```
 
-### Manually Identify Dependencies
-###### [Style [Y091](#style-y091)]
+      ```javascript
+        /* recommended */
+        angular
+            .module('app')
+            .controller('Dashboard',
+                ['$location', '$routeParams', 'common', 'dataservice',
+                    function Dashboard($location, $routeParams, common, dataservice) {}
+                ]);
+        ```
 
-  - Use `$inject` to manually identify your dependencies for Angular components.
-
-    *Why?*: This technique mirrors the technique used by [`ng-annotate`](https://github.com/olov/ng-annotate), which I recommend for automating the creation of minification safe dependencies. If `ng-annotate` detects injection has already been made, it will not duplicate it.
-
-    *Why?*: This safeguards your dependencies from being vulnerable to minification issues when parameters may be mangled. For example, `common` and `dataservice` may become `a` or `b` and not be found by Angular.
-
-    *Why?*: Avoid creating in-line dependencies as long lists can be difficult to read in the array. Also it can be confusing that the array is a series of strings while the last item is the component's function.
-
-    ```javascript
-    /* avoid */
-    angular
-        .module('app')
-        .controller('Dashboard',
-            ['$location', '$routeParams', 'common', 'dataservice',
-                function Dashboard($location, $routeParams, common, dataservice) {}
-            ]);
-    ```
-
-    ```javascript
-    /* avoid */
-    angular
-      .module('app')
-      .controller('Dashboard',
-          ['$location', '$routeParams', 'common', 'dataservice', Dashboard]);
-
-    function Dashboard($location, $routeParams, common, dataservice) {
-    }
-    ```
-
-    ```javascript
-    /* recommended */
-    angular
-        .module('app')
-        .controller('Dashboard', Dashboard);
-
-    Dashboard.$inject = ['$location', '$routeParams', 'common', 'dataservice'];
-
-    function Dashboard($location, $routeParams, common, dataservice) {
-    }
-    ```
-
-    Note: When your function is below a return statement the `$inject` may be unreachable (this may happen in a directive). You can solve this by moving the Controller outside of the directive.
-
-    ```javascript
-    /* avoid */
-    // inside a directive definition
-    function outer() {
-        var ddo = {
-            controller: DashboardPanelController,
-            controllerAs: 'vm'
-        };
-        return ddo;
-
-        DashboardPanelController.$inject = ['logger']; // Unreachable
-        function DashboardPanelController(logger) {
-        }
-    }
-    ```
-
-    ```javascript
-    /* recommended */
-    // outside a directive definition
-    function outer() {
-        var ddo = {
-            controller: DashboardPanelController,
-            controllerAs: 'vm'
-        };
-        return ddo;
-    }
-
-    DashboardPanelController.$inject = ['logger'];
-    function DashboardPanelController(logger) {
-    }
-    ```
-
-### Manually Identify Route Resolver Dependencies
-###### [Style [Y092](#style-y092)]
-
-  - Use `$inject` to manually identify your route resolver dependencies for Angular components.
-
-    *Why?*: This technique breaks out the anonymous function for the route resolver, making it easier to read.
-
-    *Why?*: An `$inject` statement can easily precede the resolver to handle making any dependencies minification safe.
-
-    ```javascript
-    /* recommended */
-    function config($routeProvider) {
-        $routeProvider
-            .when('/avengers', {
-                templateUrl: 'avengers.html',
-                controller: 'AvengersController',
-                controllerAs: 'vm',
-                resolve: {
-                    moviesPrepService: moviesPrepService
-                }
-            });
-    }
-
-    moviesPrepService.$inject = ['movieService'];
-    function moviesPrepService(movieService) {
-        return movieService.getMovies();
-    }
-    ```
-
-**[Back to top](#table-of-contents)**
+        ```javascript
 
 ## Minification and Annotation
 
