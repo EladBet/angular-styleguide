@@ -1,6 +1,6 @@
 # Quiliup Style Guide
 
-*Quiliup style guide for the client developers team by [@EladBet](//il.linkedin.com/pub/elad-betite/84/981/73)*
+*Quiliup style guide for the front end developers team, by [@EladBet](//il.linkedin.com/pub/elad-betite/84/981/73)*
 
  These styles are based on [angular-styleguide](//github.com/johnpapa/angular-styleguide.git)  by [@John_Papa](//twitter.com/john_papa) and my development experience with [Angular](//angularjs.org),  and working in a team.
 
@@ -837,52 +837,6 @@ The purpose of this style guide is to provide guidance on building and improving
   }
   ```
 
-### Return a Promise from Data Calls
-###### [Style [Y061](#style-y061)]
-
-  - When calling a data service that returns a promise such as `$http`, return a promise in your calling function too.
-
-    *Why?*: You can chain the promises together and take further action after the data call completes and resolves or rejects the promise.
-
-  ```javascript
-  /* recommended */
-
-  activate();
-
-  function activate() {
-      /**
-       * Step 1
-       * Ask the getAvengers function for the
-       * avenger data and wait for the promise
-       */
-      return getAvengers().then(function() {
-          /**
-           * Step 4
-           * Perform an action on resolve of final promise
-           */
-          logger.info('Activated Avengers View');
-      });
-  }
-
-  function getAvengers() {
-        /**
-         * Step 2
-         * Ask the data service for the data and wait
-         * for the promise
-         */
-        return dataservice.getAvengers()
-            .then(function(data) {
-                /**
-                 * Step 3
-                 * set the data and resolve the promise
-                 */
-                vm.avengers = data;
-                return vm.avengers;
-        });
-  }
-  ```
-
-**[Back to top](#table-of-contents)**
 
 ## Directives
 ### Limit 1 Per File
@@ -1361,8 +1315,6 @@ The purpose of this style guide is to provide guidance on building and improving
                     function Dashboard($location, $routeParams, common, dataservice) {}
                 ]);
         ```
-
-        ```javascript
 
 ## Minification and Annotation
 
