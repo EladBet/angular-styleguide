@@ -1297,11 +1297,11 @@ The purpose of this style guide is to provide guidance on building and improving
 
     function Dashboard(common, dataservice) {
     }
-    ```
+    ``
 
-    This code may produce mangled variables when minified and thus cause runtime errors.
+    This code may produce mangled variables when minified and thus cause runtime errors. f
 
-    ```javascript
+   ```javascript
     /* avoid - not minification-safe*/
     angular.module('app').controller('Dashboard', d);function d(a, b) { }
     ```
