@@ -1297,7 +1297,7 @@ The purpose of this style guide is to provide guidance on building and improving
 
     function Dashboard(common, dataservice) {
     }
-    ``
+    ```
 
     This code may produce mangled variables when minified and thus cause runtime errors. f
 
@@ -1316,247 +1316,15 @@ The purpose of this style guide is to provide guidance on building and improving
                 ]);
         ```
 
-## Minification and Annotation
-
-### ng-annotate
-###### [Style [Y100](#style-y100)]
-
-  - Use [ng-annotate](//github.com/olov/ng-annotate) for [Gulp](http://gulpjs.com) or [Grunt](http://gruntjs.com) and comment functions that need automated dependency injection using `/** @ngInject */`
-
-    *Why?*: This safeguards your code from any dependencies that may not be using minification-safe practices.
-
-    *Why?*: [`ng-min`](https://github.com/btford/ngmin) is deprecated
-
-    >I prefer Gulp as I feel it is easier to write, to read, and to debug.
-
-    The following code is not using minification safe dependencies.
-
-    ```javascript
-    angular
-        .module('app')
-        .controller('Avengers', Avengers);
-
-    /* @ngInject */
-    function Avengers(storageService, avengerService) {
-        var vm = this;
-        vm.heroSearch = '';
-        vm.storeHero = storeHero;
-
-        function storeHero() {
-            var hero = avengerService.find(vm.heroSearch);
-            storageService.save(hero.name, hero);
-        }
-    }
-    ```
-
-    When the above code is run through ng-annotate it will produce the following output with the `$inject` annotation and become minification-safe.
-
-    ```javascript
-    angular
-        .module('app')
-        .controller('Avengers', Avengers);
-
-    /* @ngInject */
-    function Avengers(storageService, avengerService) {
-        var vm = this;
-        vm.heroSearch = '';
-        vm.storeHero = storeHero;
-
-        function storeHero() {
-            var hero = avengerService.find(vm.heroSearch);
-            storageService.save(hero.name, hero);
-        }
-    }
-
-    Avengers.$inject = ['storageService', 'avengerService'];
-    ```
-
-    Note: If `ng-annotate` detects injection has already been made (e.g. `@ngInject` was detected), it will not duplicate the `$inject` code.
-
-    Note: When using a route resolver you can prefix the resolver's function with `/* @ngInject */` and it will produce properly annotated code, keeping any injected dependencies minification safe.
-
-    ```javascript
-    // Using @ngInject annotations
-    function config($routeProvider) {
-        $routeProvider
-            .when('/avengers', {
-                templateUrl: 'avengers.html',
-                controller: 'Avengers',
-                controllerAs: 'vm',
-                resolve: { /* @ngInject */
-                    moviesPrepService: function(movieService) {
-                        return movieService.getMovies();
-                    }
-                }
-            });
-    }
-    ```
-
-    > Note: Starting from Angular 1.3 you can use the [`ngApp`](https://docs.angularjs.org/api/ng/directive/ngApp) directive's `ngStrictDi` parameter to detect any potentially missing minification safe dependencies. When present the injector will be created in "strict-di" mode causing the application to fail to invoke functions which do not use explicit function annotation (these may not be minification safe). Debugging info will be logged to the console to help track down the offending code. I prefer to only use `ng-strict-di` for debugging purposes only.
-    `<body ng-app="APP" ng-strict-di>`
-
-### Use Gulp or Grunt for ng-annotate
-###### [Style [Y101](#style-y101)]
-
-  - Use [gulp-ng-annotate](https://www.npmjs.org/package/gulp-ng-annotate) or [grunt-ng-annotate](https://www.npmjs.org/package/grunt-ng-annotate) in an automated build task. Inject `/* @ngInject */` prior to any function that has dependencies.
-
-    *Why?*: ng-annotate will catch most dependencies, but it sometimes requires hints using the `/* @ngInject */` syntax.
-
-    The following code is an example of a gulp task using ngAnnotate
-
-    ```javascript
-    gulp.task('js', ['jshint'], function() {
-        var source = pkg.paths.js;
-
-        return gulp.src(source)
-            .pipe(sourcemaps.init())
-            .pipe(concat('all.min.js', {newLine: ';'}))
-            // Annotate before uglify so the code get's min'd properly.
-            .pipe(ngAnnotate({
-                // true helps add where @ngInject is not used. It infers.
-                // Doesn't work with resolve, so we must be explicit there
-                add: true
-            }))
-            .pipe(bytediff.start())
-            .pipe(uglify({mangle: true}))
-            .pipe(bytediff.stop())
-            .pipe(sourcemaps.write('./'))
-            .pipe(gulp.dest(pkg.paths.dev));
-    });
-
-    ```
-
-**[Back to top](#table-of-contents)**
-
-## Exception Handling
-
-### decorators
-###### [Style [Y110](#style-y110)]
-
-  - Use a [decorator](https://docs.angularjs.org/api/auto/service/$provide#decorator), at config time using the [`$provide`](https://docs.angularjs.org/api/auto/service/$provide) service, on the [`$exceptionHandler`](https://docs.angularjs.org/api/ng/service/$exceptionHandler) service to perform custom actions when exceptions occur.
-
-    *Why?*: Provides a consistent way to handle uncaught Angular exceptions for development-time or run-time.
-
-    Note: Another option is to override the service instead of using a decorator. This is a fine option, but if you want to keep the default behavior and extend it a decorator is recommended.
-
-    ```javascript
-    /* recommended */
-    angular
-        .module('blocks.exception')
-        .config(exceptionConfig);
-
-    exceptionConfig.$inject = ['$provide'];
-
-    function exceptionConfig($provide) {
-        $provide.decorator('$exceptionHandler', extendExceptionHandler);
-    }
-
-    extendExceptionHandler.$inject = ['$delegate', 'toastr'];
-
-    function extendExceptionHandler($delegate, toastr) {
-        return function(exception, cause) {
-            $delegate(exception, cause);
-            var errorData = {
-                exception: exception,
-                cause: cause
-            };
-            /**
-             * Could add the error to a service's collection,
-             * add errors to $rootScope, log errors to remote web server,
-             * or log locally. Or throw hard. It is entirely up to you.
-             * throw exception;
-             */
-            toastr.error(exception.msg, errorData);
-        };
-    }
-    ```
-
-### Exception Catchers
-###### [Style [Y111](#style-y111)]
-
-  - Create a factory that exposes an interface to catch and gracefully handle exceptions.
-
-    *Why?*: Provides a consistent way to catch exceptions that may be thrown in your code (e.g. during XHR calls or promise failures).
-
-    Note: The exception catcher is good for catching and reacting to specific exceptions from calls that you know may throw one. For example, when making an XHR call to retrieve data from a remote web service and you want to catch any exceptions from that service and react uniquely.
-
-    ```javascript
-    /* recommended */
-    angular
-        .module('blocks.exception')
-        .factory('exception', exception);
-
-    exception.$inject = ['logger'];
-
-    function exception(logger) {
-        var service = {
-            catcher: catcher
-        };
-        return service;
-
-        function catcher(message) {
-            return function(reason) {
-                logger.error(message, reason);
-            };
-        }
-    }
-    ```
-
-### Route Errors
-###### [Style [Y112](#style-y112)]
-
-  - Handle and log all routing errors using [`$routeChangeError`](https://docs.angularjs.org/api/ngRoute/service/$route#$routeChangeError).
-
-    *Why?*: Provides a consistent way to handle all routing errors.
-
-    *Why?*: Potentially provides a better user experience if a routing error occurs and you route them to a friendly screen with more details or recovery options.
-
-    ```javascript
-    /* recommended */
-    var handlingRouteChangeError = false;
-
-    function handleRoutingErrors() {
-        /**
-         * Route cancellation:
-         * On routing error, go to the dashboard.
-         * Provide an exit clause if it tries to do it twice.
-         */
-        $rootScope.$on('$routeChangeError',
-            function(event, current, previous, rejection) {
-                if (handlingRouteChangeError) { return; }
-                handlingRouteChangeError = true;
-                var destination = (current && (current.title ||
-                    current.name || current.loadedTemplateUrl)) ||
-                    'unknown target';
-                var msg = 'Error routing to ' + destination + '. ' +
-                    (rejection.msg || '');
-
-                /**
-                 * Optionally log using a custom service or $log.
-                 * (Don't forget to inject custom service)
-                 */
-                logger.warning(msg, [current]);
-
-                /**
-                 * On routing error, go to another route/state.
-                 */
-                $location.path('/');
-
-            }
-        );
-    }
-    ```
-
-**[Back to top](#table-of-contents)**
 
 ## Naming
 
 ### Naming Guidelines
 ###### [Style [Y120](#style-y120)]
 
-  - Use consistent names for all components following a pattern that describes the component's feature then (optionally) its type. My recommended pattern is `feature.type.js`. There are 2 names for most assets:
-    * the file name (`avengers.controller.js`)
-    * the registered component name with Angular (`AvengersController`)
+  - Use consistent names for all components following a pattern that describes the component's feature then (optionally) its type. My recommended pattern is `feature.js`. There are 2 names for most assets:
+    * the file name (`year-avengers.js`)
+    * the registered component name with Angular (`YearAvengersController`)
 
     *Why?*: Naming conventions help provide a consistent way to find content at a glance. Consistency within the project is vital. Consistency with a team is important. Consistency across a company provides tremendous efficiency.
 
@@ -1571,21 +1339,6 @@ The purpose of this style guide is to provide guidance on building and improving
 
     *Why?*: Provides pattern matching for any automated tasks.
 
-    ```javascript
-    /**
-     * common options
-     */
-
-    // Controllers
-    avengers.js
-    avengers.controller.js
-    avengersController.js
-
-    // Services/Factories
-    logger.js
-    logger.service.js
-    loggerService.js
-    ```
 
     ```javascript
     /**
@@ -1593,8 +1346,8 @@ The purpose of this style guide is to provide guidance on building and improving
      */
 
     // controllers
-    avengers.controller.js
-    avengers.controller.spec.js
+    avengers.js
+    avengers.spec.js
 
     // services/factories
     logger.service.js
@@ -1603,50 +1356,9 @@ The purpose of this style guide is to provide guidance on building and improving
     // constants
     constants.js
 
-    // module definition
-    avengers.module.js
 
-    // routes
-    avengers.routes.js
-    avengers.routes.spec.js
-
-    // configuration
-    avengers.config.js
-
-    // directives
-    avenger-profile.directive.js
-    avenger-profile.directive.spec.js
     ```
 
-  Note: Another common convention is naming controller files without the word `controller` in the file name such as `avengers.js` instead of `avengers.controller.js`. All other conventions still hold using a suffix of the type. Controllers are the most common type of component so this just saves typing and is still easily identifiable. I recommend you choose 1 convention and be consistent for your team. My preference is `avengers.controller.js`.
-
-    ```javascript
-    /**
-     * recommended
-     */
-    // Controllers
-    avengers.js
-    avengers.spec.js
-    ```
-
-### Test File Names
-###### [Style [Y122](#style-y122)]
-
-  - Name test specifications similar to the component they test with a suffix of `spec`.
-
-    *Why?*: Provides a consistent way to quickly identify components.
-
-    *Why?*: Provides pattern matching for [karma](http://karma-runner.github.io/) or other test runners.
-
-    ```javascript
-    /**
-     * recommended
-     */
-    avengers.controller.spec.js
-    logger.service.spec.js
-    avengers.routes.spec.js
-    avenger-profile.directive.spec.js
-    ```
 
 ### Controller Names
 ###### [Style [Y123](#style-y123)]
@@ -1733,110 +1445,6 @@ The purpose of this style guide is to provide guidance on building and improving
 
     function xxAvengerProfile() { }
     ```
-
-### Modules
-###### [Style [Y127](#style-y127)]
-
-  - When there are multiple modules, the main module file is named `app.module.js` while other dependent modules are named after what they represent. For example, an admin module is named `admin.module.js`. The respective registered module names would be `app` and `admin`.
-
-    *Why?*: Provides consistency for multiple module apps, and for expanding to large applications.
-
-    *Why?*: Provides easy way to use task automation to load all module definitions first, then all other angular files (for bundling).
-
-### Configuration
-###### [Style [Y128](#style-y128)]
-
-  - Separate configuration for a module into its own file named after the module. A configuration file for the main `app` module is named `app.config.js` (or simply `config.js`). A configuration for a module named `admin.module.js` is named `admin.config.js`.
-
-    *Why?*: Separates configuration from module definition, components, and active code.
-
-    *Why?*: Provides an identifiable place to set configuration for a module.
-
-### Routes
-###### [Style [Y129](#style-y129)]
-
-  - Separate route configuration into its own file. Examples might be `app.route.js` for the main module and `admin.route.js` for the `admin` module. Even in smaller apps I prefer this separation from the rest of the configuration.
-
-**[Back to top](#table-of-contents)**
-
-## Application Structure LIFT Principle
-### LIFT
-###### [Style [Y140](#style-y140)]
-
-  - Structure your app such that you can `L`ocate your code quickly, `I`dentify the code at a glance, keep the `F`lattest structure you can, and `T`ry to stay DRY. The structure should follow these 4 basic guidelines.
-
-    *Why LIFT?*: Provides a consistent structure that scales well, is modular, and makes it easier to increase developer efficiency by finding code quickly. Another way to check your app structure is to ask yourself: How quickly can you open and work in all of the related files for a feature?
-
-    When I find my structure is not feeling comfortable, I go back and revisit these LIFT guidelines
-
-    1. `L`ocating our code is easy
-    2. `I`dentify code at a glance
-    3. `F`lat structure as long as we can
-    4. `T`ry to stay DRY (Don’t Repeat Yourself) or T-DRY
-
-### Locate
-###### [Style [Y141](#style-y141)]
-
-  - Make locating your code intuitive, simple and fast.
-
-    *Why?*: I find this to be super important for a project. If the team cannot find the files they need to work on quickly, they will not be able to work as efficiently as possible, and the structure needs to change. You may not know the file name or where its related files are, so putting them in the most intuitive locations and near each other saves a ton of time. A descriptive folder structure can help with this.
-
-    ```
-    /bower_components
-    /client
-      /app
-        /avengers
-        /blocks
-          /exception
-          /logger
-        /core
-        /dashboard
-        /data
-        /layout
-        /widgets
-      /content
-      index.html
-    .bower.json
-    ```
-
-### Identify
-###### [Style [Y142](#style-y142)]
-
-  - When you look at a file you should instantly know what it contains and represents.
-
-    *Why?*: You spend less time hunting and pecking for code, and become more efficient. If this means you want longer file names, then so be it. Be descriptive with file names and keeping the contents of the file to exactly 1 component. Avoid files with multiple controllers, multiple services, or a mixture. There are deviations of the 1 per file rule when I have a set of very small features that are all related to each other, they are still easily identifiable.
-
-### Flat
-###### [Style [Y143](#style-y143)]
-
-  - Keep a flat folder structure as long as possible. When you get to 7+ files, begin considering separation.
-
-    *Why?*: Nobody wants to search 7 levels of folders to find a file. Think about menus on web sites … anything deeper than 2 should take serious consideration. In a folder structure there is no hard and fast number rule, but when a folder has 7-10 files, that may be time to create subfolders. Base it on your comfort level. Use a flatter structure until there is an obvious value (to help the rest of LIFT) in creating a new folder.
-
-### T-DRY (Try to Stick to DRY)
-###### [Style [Y144](#style-y144)]
-
-  - Be DRY, but don't go nuts and sacrifice readability.
-
-    *Why?*: Being DRY is important, but not crucial if it sacrifices the others in LIFT, which is why I call it T-DRY. I don’t want to type session-view.html for a view because, well, it’s obviously a view. If it is not obvious or by convention, then I name it.
-
-**[Back to top](#table-of-contents)**
-
-## Application Structure
-
-### Overall Guidelines
-###### [Style [Y150](#style-y150)]
-
-  - Have a near term view of implementation and a long term vision. In other words, start small but keep in mind on where the app is heading down the road. All of the app's code goes in a root folder named `app`. All content is 1 feature per file. Each controller, service, module, view is in its own file. All 3rd party vendor scripts are stored in another root folder and not in the `app` folder. I didn't write them and I don't want them cluttering my app (`bower_components`, `scripts`, `lib`).
-
-    Note: Find more details and reasoning behind the structure at [this original post on application structure](http://www.johnpapa.net/angular-app-structuring-guidelines/).
-
-### Layout
-###### [Style [Y151](#style-y151)]
-
-  - Place components that define the overall layout of the application in a folder named `layout`. These may include a shell view and controller may act as the container for the app, navigation, menus, content areas, and other regions.
-
-    *Why?*: Organizes all layout in a single place re-used throughout the application.
 
 ### Folders-by-Feature Structure
 ###### [Style [Y152](#style-y152)]
@@ -1935,15 +1543,6 @@ The purpose of this style guide is to provide guidance on building and improving
     ```
 
 **[Back to top](#table-of-contents)**
-
-## Modularity
-
-### Many Small, Self Contained Modules
-###### [Style [Y160](#style-y160)]
-
-  - Create small modules that encapsulate one responsibility.
-
-    *Why?*: Modular applications make it easy to plug and go as they allow the development teams to build vertical slices of the applications and roll out incrementally. This means we can plug in new features as we develop them.
 
 ### Create an App Module
 ###### [Style [Y161](#style-y161)]
