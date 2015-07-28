@@ -17,28 +17,14 @@ The purpose of this style guide is to provide guidance on building and improving
   1. [Directives](#directives)
   1. [Resolving Promises for a Controller](#resolving-promises-for-a-controller)
   1. [Manual Annotating for Dependency Injection](#manual-annotating-for-dependency-injection)
-  1. [Minification and Annotation](#minification-and-annotation)
-  1. [Exception Handling](#exception-handling)
   1. [Naming](#naming)
   1. [Application Structure LIFT Principle](#application-structure-lift-principle)
   1. [Application Structure](#application-structure)
-  1. [Modularity](#modularity)
   1. [Startup Logic](#startup-logic)
   1. [Angular $ Wrapper Services](#angular--wrapper-services)
-  1. [Testing](#testing)
   1. [Animations](#animations)
-  1. [Comments](#comments)
-  1. [JSHint](#js-hint)
-  1. [JSCS](#jscs)
-  1. [Constants](#constants)
-  1. [File Templates and Snippets](#file-templates-and-snippets)
-  1. [Yeoman Generator](#yeoman-generator)
-  1. [Routing](#routing)
-  1. [Task Automation](#task-automation)
   1. [Filters](#filters)
-  1. [Angular Docs](#angular-docs)
-  1. [Contributing](#contributing)
-  1. [License](#license)
+
 
 ## Single Responsibility
 
@@ -1306,15 +1292,15 @@ The purpose of this style guide is to provide guidance on building and improving
     angular.module('app').controller('Dashboard', d);function d(a, b) { }
     ```
 
-      ```javascript
-        /* recommended */
-        angular
-            .module('app')
-            .controller('Dashboard',
-                ['$location', '$routeParams', 'common', 'dataservice',
-                    function Dashboard($location, $routeParams, common, dataservice) {}
-                ]);
-        ```
+   ```javascript
+     /* recommended */
+     angular
+         .module('app')
+         .controller('Dashboard',
+             ['$location', '$routeParams', 'common', 'dataservice',
+                 function Dashboard($location, $routeParams, common, dataservice) {}
+             ]);
+     ```
 
 
 ## Naming
@@ -1445,6 +1431,8 @@ The purpose of this style guide is to provide guidance on building and improving
 
     function xxAvengerProfile() { }
     ```
+
+## Application Structure LIFT Principle
 
 ### Folders-by-Feature Structure
 ###### [Style [Y152](#style-y152)]
