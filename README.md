@@ -20,6 +20,7 @@ The purpose of this style guide is to provide guidance on building and improving
   1. [Naming](#naming)
   1. [Application Structure LIFT Principle](#application-structure-lift-principle)
   1. [Application Structure](#application-structure)
+  1. [Modularity](#modularity) (
   1. [Startup Logic](#startup-logic)
   1. [Angular $ Wrapper Services](#angular--wrapper-services)
   1. [Animations](#animations)
@@ -1531,6 +1532,8 @@ The purpose of this style guide is to provide guidance on building and improving
     ```
 
 **[Back to top](#table-of-contents)**
+
+##Modularity
 
 ### Module Dependencies
 ###### [Style [Y165](#style-y165)]
