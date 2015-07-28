@@ -20,7 +20,7 @@ The purpose of this style guide is to provide guidance on building and improving
   1. [Naming](#naming)
   1. [Application Structure LIFT Principle](#application-structure-lift-principle)
   1. [Application Structure](#application-structure)
-  1. [Modularity](#modularity) (
+  1. [Modularity](#modularity)
   1. [Startup Logic](#startup-logic)
   1. [Angular $ Wrapper Services](#angular--wrapper-services)
   1. [Animations](#animations)
@@ -1537,6 +1537,16 @@ The purpose of this style guide is to provide guidance on building and improving
 
 ### Module Dependencies
 ###### [Style [Y165](#style-y165)]
+
+  - The application root module depends on the app specific feature modules and any shared or reusable modules.
+
+    ![Modularity and Dependencies](https://raw.githubusercontent.com/johnpapa/angular-styleguide/master/assets/modularity-1.png)
+
+    *Why?*: The main app module contains a quickly identifiable manifest of the application's features.
+
+    *Why?*: Each feature area contains a manifest of what it depends on, so it can be pulled in as a dependency in other applications and still work.
+
+    *Why?*: Intra-App features such as shared data services become easy to locate and share from within `app.core` (choose your favorite name for this module).
 
 **[Back to top](#table-of-contents)**
 
