@@ -4,13 +4,14 @@
 
  These styles are based on [angular-styleguide](//github.com/johnpapa/angular-styleguide.git)  by [@John_Papa](//twitter.com/john_papa) and my development experience with [Angular](//angularjs.org),  and working in a team.
 
-The purpose of this style guide is to provide guidance on building and improving quiliup applications by showing the conventions we use and, more importantly, why we choose them.
+The purpose of this style guide is to provide guidance on building and improving quiliup applications by showing the conventions we used ,and more importantly, why we choose them.
 
 ## Table of Contents
 
   1. [Single Responsibility](#single-responsibility)
   1. [Modules](#modules)
   1. [Controllers](#controllers)
+  1. [SVG Icons] (#svg-icons)
   1. [Services](#services)
   1. [Factories](#factories)
   1. [Data Services](#data-services)
@@ -532,6 +533,58 @@ The purpose of this style guide is to provide guidance on building and improving
   <div>
   </div>
   ```
+
+**[Back to top](#table-of-contents)**
+
+
+## SVG Icons
+
+   - SVG images are actually written in xml. This means you can manipulate images directly in your code editor (that is, if you take the time to learn the language). This gives you a ton of power to do complex manipulations and animations that are not possible with standard raster-based images.
+
+   - SVG images are accessible with client-side scripts. This means you can manipulate certain parts of the image with Javascript.
+
+   - SVG’s are Polychromatic, so you can have multiple colors in your design. This is where SVG’s really shine over icon fonts.
+
+   - Create a new `directive` for new SVG icon, perfix the directive name with the `Svg` , set input parameters for `width`, `height` and `svgClass`.
+
+   - Put the directive in the `svg-icons.js` file in the `shared` folder.
+
+   *Why?*: This way you can use the same icon in different shapes and colors over and over again.
+
+   *Why?*: Helpful when you need to change the icon in all pages.
+
+   ```javascript
+   .directive('testSvg', function() {
+           return {
+               restrict: 'E',
+               scope: {
+                   width: '@',
+                   height: '@',
+                   svgClass:'@'
+               },
+               templateNamespace: 'svg',
+               template:'<svg version="1.1" class="icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  x="0px" y="0px" ng-attr-style="{{svgClass}}" ng-attr-width="{{width}}" ng-attr-height="{{height}}" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">' +
+                   '<path d="M174.75,70c0-11.046,8.954-20,20-20h122.5c11.046,0,20,8.954,20,20s-8.954,20-20,20h-122.5 C183.704,90,174.75,81.046,174.75,70z M369.958,462c30.866,0,51.176-32.304,37.802-60.121l-64.847-134.865 c-18.044-37.528-27.413-78.635-27.413-120.275V120h-39.775c0,28.335-4.785,89.631,31.14,164.348         c36.038,74.95,49.581,103.666,56.859,118.785c8.105,16.839-15.017,25.674-22.841,9.311l-70.881-148.776h-55.786      c25.377-63.748,22.002-115.29,22.002-143.667H196.5v26.739c0,41.64-9.369,82.746-27.413,120.273L104.241,401.88                C90.865,429.696,111.179,462,142.043,462H369.958z"/>' +
+               '</svg>'
+
+
+           }
+       })
+   ```
+
+   - Add the new directive to `svg-icons.html` file in the `views\templates` folder.
+
+   *Why?*: This is helpful to prevent duplicate directives of the same SVG icon.
+
+    ```html
+     <!-- svg-icons.html -->
+    <div class="col-md-3">
+    		<span >test-svg</span>
+    		<test-svg class="row" "width="50px" height="50px" svg-class="fill: #586575"></test-svg>
+    	</div>
+     ```
+
+      ![SVG Icons](https://raw.githubusercontent.com/EladBet/angular-styleguide/master/assets/svg-icons.png)
 
 **[Back to top](#table-of-contents)**
 
