@@ -541,11 +541,7 @@ The purpose of this style guide is to provide guidance on building and improving
 
    - SVG images are actually written in xml. This means you can manipulate images directly in your code editor (that is, if you take the time to learn the language). This gives you a ton of power to do complex manipulations and animations that are not possible with standard raster-based images.
 
-   - SVG images are accessible with client-side scripts. This means you can manipulate certain parts of the image with Javascript.
-
-   - SVG’s are Polychromatic, so you can have multiple colors in your design. This is where SVG’s really shine over icon fonts.
-
-   - Create a new `directive` for new SVG icon, perfix the directive name with the `Svg` , set input parameters for `width`, `height` and `svgClass`.
+   - Create a new `directive` for new SVG icon, perfix the directive name with the `Svg` perfix , set input parameters for `width`, `height` and `svgClass`.
 
    - Put the directive in the `svg-icons.js` file in the `shared` folder.
 
@@ -554,6 +550,7 @@ The purpose of this style guide is to provide guidance on building and improving
    *Why?*: Helpful when you need to change the icon in all pages.
 
    ```javascript
+    <!-- svg-icons.js -->
    .directive('testSvg', function() {
            return {
                restrict: 'E',
