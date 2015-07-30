@@ -597,19 +597,19 @@ The purpose of this style guide is to provide guidance on building and improving
     *Why?*: This way we can detect untreated strings with automated test.
 
      ```html
-            <h1>{{ '_TITLE' | translate }}</h1>
-            <p>{{ '_TWO_WORDS' | translate }}</p>
-         ```
+         <h1>{{ '_TITLE' | translate }}</h1>
+         <p>{{ '_TWO_WORDS' | translate }}</p>
+      ```
 
-     - User the `json` language file in the `languages` folder to set the translations.
+    - Use the dedicated `json` language file in the `languages` folder to set the translations.
 
-        ```javascript
-          /* en.json */
-         {
-            "_TITLE":"Tittle",
-            "_TWO_WORDS":"Two words",
-         }
-          ```
+     ```javascript
+       /* en.json */
+      {
+         "_TITLE":"Tittle",
+         "_TWO_WORDS":"Two words",
+      }
+      ```
 
 
 **[Back to top](#table-of-contents)**
