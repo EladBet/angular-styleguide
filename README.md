@@ -590,26 +590,26 @@ The purpose of this style guide is to provide guidance on building and improving
 ## Translation
 ###### [Style [Y213](#style-y213)]
 
-    - For language translation services we use [angular-translate](//github.com/ngular-translate/angular-translate.git)
+   - For language translation services we use [angular-translate](//github.com/ngular-translate/angular-translate.git)
 
-    - For each string which is displayed to the user , use the Upper Case replacement starting with underline and replace all spaces with underline.
+   - For each string which is displayed to the user , use the Upper Case replacement starting with underline and replace all spaces with underline.
 
-     *Why?*: This way we can detect untreated strings with automated test.
+    *Why?*: This way we can detect untreated strings with automated test.
 
      ```html
-        <h1>{{ '_TITLE' | translate }}</h1>
-        <p>{{ '_TWO_WORDS' | translate }}</p>
-     ```
+            <h1>{{ '_TITLE' | translate }}</h1>
+            <p>{{ '_TWO_WORDS' | translate }}</p>
+         ```
 
-    - User the `json` language file in the `languages` folder to set the translations.
+     - User the `json` language file in the `languages` folder to set the translations.
 
-    ```javascript
-      /* en.json */
-     {
-        "_TITLE":"Tittle",
-        "_TWO_WORDS":"Two words",
-     }
-      ```
+        ```javascript
+          /* en.json */
+         {
+            "_TITLE":"Tittle",
+            "_TWO_WORDS":"Two words",
+         }
+          ```
 
 
 **[Back to top](#table-of-contents)**
