@@ -12,6 +12,7 @@ The purpose of this style guide is to provide guidance on building and improving
   1. [Modules](#modules)
   1. [Controllers](#controllers)
   1. [SVG Icons] (#svg-icons)
+  1. [Translation] (#translation)
   1. [Services](#services)
   1. [Factories](#factories)
   1. [Data Services](#data-services)
@@ -538,6 +539,7 @@ The purpose of this style guide is to provide guidance on building and improving
 
 
 ## SVG Icons
+###### [Style [Y213](#style-y213)]
 
    - SVG images are actually written in xml. This means you can manipulate images directly in your code editor (that is, if you take the time to learn the language). This gives you a ton of power to do complex manipulations and animations that are not possible with standard raster-based images.
 
@@ -584,6 +586,35 @@ The purpose of this style guide is to provide guidance on building and improving
       ![SVG Icons](https://raw.githubusercontent.com/EladBet/angular-styleguide/master/assets/svg-icons.png)
 
 **[Back to top](#table-of-contents)**
+
+## Translation
+###### [Style [Y213](#style-y213)]
+
+    - For language translation services we use [angular-translate](//github.com/ngular-translate/angular-translate.git)
+
+    - For each string which is displayed to the user , use the Upper Case replacement starting with underline and replace all spaces with underline.
+
+     *Why?*: This way we can detect untreated strings with automated test.
+
+     ```html
+        <h1>{{ '_TITLE' | translate }}</h1>
+        <p>{{ '_TWO_WORDS' | translate }}</p>
+     ```
+
+    - User the `json` language file in the `languages` folder to set the translations.
+
+    ```javascript
+      /* en.json */
+     {
+        "_TITLE":"Tittle",
+        "_TWO_WORDS":"Two words",
+     }
+      ```
+
+
+**[Back to top](#table-of-contents)**
+
+
 
 ## Services
 
