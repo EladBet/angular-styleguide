@@ -621,37 +621,26 @@ The purpose of this style guide is to provide guidance on building and improving
 ### Singletons
 ###### [Style [Y040](#style-y040)]
 
-  - Services are instantiated with the `new` keyword, use `this` for public methods and variables. Since these are so similar to factories, use a factory instead for consistency.
-
+  - Here's an example of a service and a factory that accomplish the same thing.
     Note: [All Angular services are singletons](https://docs.angularjs.org/guide/services). This means that there is only one instance of a given service per injector.
 
-  ```javascript
-  // service
-  angular
-      .module('app')
-      .service('logger', logger);
+    ```javascript
+    var app = angular.module('app',[]);
 
-  function logger() {
-    this.logError = function(msg) {
-      /* */
-    };
-  }
-  ```
+    app.service('helloWorldService', function(){
+        this.hello = function() {
+            return "Hello World";
+        };
+    });
 
-  ```javascript
-  // factory
-  angular
-      .module('app')
-      .factory('logger', logger);
-
-  function logger() {
-      return {
-          logError: function(msg) {
-            /* */
-          }
-     };
-  }
-  ```
+    app.factory('helloWorldFactory', function(){
+        return {
+            hello: function() {
+                return "Hello World";
+            }
+        }
+    });
+    ```
 
 **[Back to top](#table-of-contents)**
 
@@ -665,10 +654,37 @@ The purpose of this style guide is to provide guidance on building and improving
 ### Singletons
 ###### [Style [Y051](#style-y051)]
 
+  - Factories are instantiated with the `new` keyword.
   - Factories are singletons and return an object that contains the members of the service.
 
     Note: [All Angular services are singletons](https://docs.angularjs.org/guide/services).
 
+    ```javascript
+     // factory
+     app.factory('helloFactory', function() {
+         return function(name) {
+             this.name = name;
+
+             this.hello = function() {
+                 return "Hello " + this.name;
+             };
+         };
+     });
+     ```
+
+  - Here's an example controller using the service and the two factories. With the `helloFactory` returning a function, the name value is set when the object is `new`'d.
+
+   ```javascript
+      app.controller('helloCtrl', function($scope, helloWorldService, helloWorldFactory, helloFactory) {
+          init = function() {
+            helloWorldService.hello(); //'Hello World'
+            helloWorldFactory.hello(); //'Hello World'
+            new helloFactory('Readers').hello() //'Hello Readers'
+          }
+
+          init();
+      });
+       ```
 ### Accessible Members Up Top
 ###### [Style [Y052](#style-y052)]
 
