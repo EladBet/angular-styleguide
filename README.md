@@ -921,6 +921,122 @@ The purpose of this style guide is to provide guidance on building and improving
   ```
 
 
+### One service for one RESTful server data source
+###### [Style [Y061](#style-y061)]
+
+
+   - A resource "class" object contains default methods.
+   - Always use the default methods to interact with RESTful server-side data sources and when needded extended with custom actions.
+
+     *Why?*: Provides consistency in your resources.
+
+   - Here's the default default methods:
+
+    ```javascript
+      { 'get':    {method:'GET'},
+        'save':   {method:'POST'},
+        'query':  {method:'GET', isArray:true},
+        'remove': {method:'DELETE'},
+        'delete': {method:'DELETE'} };
+    ```
+
+
+
+   ```javascript
+    /* avoid */
+
+    var restServices = angular.module('restServices', ['ngResource']);
+
+    restServices.factory('engineExecutionsAPI', ['$resource',
+        function($resource){
+            return $resource('/api/engineExecutions',{},{
+                "get":{method:'GET',isArray:true ,params:{}}
+            });
+        }]
+    );
+
+    restServices.factory('engineGetExecutionStatusAPI', ['$resource',
+        function($resource) {
+            return $resource('/api/engineExecutions/id?filter=id,testId,finalResult,duration,sumResults,errorMessage&executionId=:id', {id: '@id'}, {
+                "get": {method: 'GET', params: {}}
+            });
+        }]
+    );
+
+    restServices.factory('engineGetExecutionAPI', ['$resource',
+        function($resource){
+            return $resource('/api/engineExecutions/id',{},{
+                "get":{method:'GET' ,params:{}}
+            });
+        }]
+    );
+    ```
+
+    Note: You can pass filter parameters in the controller so there is no need to announce them in the resource service.
+
+    ```javascript
+     /* recommended */
+
+     var restServices = angular.module('restServices', ['ngResource']);
+
+     restServices.factory('engineExecutionsAPI', ['$resource',
+         function($resource){
+             return $resource('/api/engineExecutions',{},{
+             });
+         }]
+     );
+     ```
+
+###Extend $resource with custom actions
+###### [Style [Y062](#style-y062)]
+
+    - Extend ngResource custom actions set by using input parameters.
+
+         *Why?*: This way we can detect untreated request with automated test..
+
+    ```javascript
+      /* avoid */
+
+      var restServices = angular.module('restServices', ['ngResource']);
+
+      restServices.factory('addMainGrid', ['$resource',
+          function($resource){
+              return $resource('/api/rda/addMainGrid',{},{
+                  "add":{method:'POST',params:{}}
+              });
+          }]);
+
+      restServices.factory('updateMainGrid', ['$resource',
+          function($resource){
+              return $resource('/api/rda/updateMainGrid',{},{
+                  "update":{method:'POST',params:{}}
+              });
+          }]);
+
+      restServices.factory('deleteMainGrid', ['$resource',
+          function($resource){
+              return $resource('/api/rda/deleteMainGrid',{},{
+                  "remove":{method:'POST',params:{}}
+              });
+          }]);
+      ```
+
+      ```javascript
+           /* recommended */
+
+           var restServices = angular.module('restServices', ['ngResource']);
+
+            restServices.factory('rda', ['$resource',
+                     function($resource){
+                         return $resource('/api/rda/:method',{},{
+                            "add":{method:'POST',params:{method:'addMainGrid'}}
+                            "update":{method:'POST',params:{method:'updateMainGrid'}}
+                            "remove":{method:'POST',params:{method:'deleteMainGrid'}}
+                         });
+                     }]);
+       ```
+
+
 ## Directives
 ### Limit 1 Per File
 ###### [Style [Y070](#style-y070)]
