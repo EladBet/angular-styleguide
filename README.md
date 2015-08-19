@@ -930,7 +930,7 @@ The purpose of this style guide is to provide guidance on building and improving
 
      *Why?*: Provides consistency in your resources.
 
-   - Here's the default default methods:
+   - Here's the default methods:
 
     ```javascript
       { 'get':    {method:'GET'},
@@ -972,7 +972,7 @@ The purpose of this style guide is to provide guidance on building and improving
     );
     ```
 
-    Note: You can pass filter parameters in the controller so there is no need to announce them in the resource service.
+   Note: You can pass filter parameters in the controller so there is no need to announce them in the resource service.
 
     ```javascript
      /* recommended */
@@ -990,9 +990,11 @@ The purpose of this style guide is to provide guidance on building and improving
 ###Extend $resource with custom actions
 ###### [Style [Y062](#style-y062)]
 
-    - Extend ngResource custom actions set by using input parameters.
+   - Extend ngResource custom actions set by using input parameters.
 
-         *Why?*: This way we can detect untreated request with automated test..
+     *Why?*: Using one service for RESTful data source make it easy to read and helps you instantly identify which method to use to interact with the data you need .
+
+     *Why?*: This way we can detect untreated request with automated test.
 
     ```javascript
       /* avoid */
