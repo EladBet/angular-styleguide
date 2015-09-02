@@ -1297,7 +1297,6 @@ The purpose of this style guide is to provide guidance on building and improving
 **[Back to top](#table-of-contents)**
 
 ## Resolving Promises for a Controller
-
 ### Promises and $q service
 ###### [Style [Y080](#style-y080)]
   - $q is a service that helps you run functions asynchronously, and use their return values (or exceptions) when they are done processing.
@@ -1322,7 +1321,7 @@ The purpose of this style guide is to provide guidance on building and improving
          }
 
          function run() {
-             //call save function with indication that I wont to run the test in the end
+             //call save function with indication that I want to run the test in the end
              save(false, true);
          }
      ```
