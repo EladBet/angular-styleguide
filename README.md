@@ -303,41 +303,6 @@ The purpose of this style guide is to provide guidance on building and improving
       }
   ```
 
-
-  Note: If the function is a 1 liner consider keeping it right up top, as long as readability is not affected.
-
-  ```javascript
-  /* avoid */
-  function Sessions(data) {
-      var vm = this;
-
-      vm.gotoSession = gotoSession;
-      vm.refresh = function() {
-          /**
-           * lines
-           * of
-           * code
-           * affects
-           * readability
-           */
-      };
-      vm.search = search;
-      vm.sessions = [];
-      vm.title = 'Sessions';
-  ```
-
-  ```javascript
-  /* recommended */
-  function Sessions(dataservice) {
-      var vm = this;
-
-      vm.gotoSession = gotoSession;
-      vm.refresh = dataservice.refresh; // 1 liner is OK
-      vm.search = search;
-      vm.sessions = [];
-      vm.title = 'Sessions';
-  ```
-
 ### Function Declarations to Hide Implementation Details
 ###### [Style [Y034](#style-y034)]
 
@@ -987,7 +952,7 @@ The purpose of this style guide is to provide guidance on building and improving
      );
      ```
 
-###Extend $resource with custom actions
+### Extend $resource with custom actions
 ###### [Style [Y062](#style-y062)]
 
    - Extend ngResource custom actions set by using input parameters.
@@ -1024,18 +989,18 @@ The purpose of this style guide is to provide guidance on building and improving
       ```
 
       ```javascript
-           /* recommended */
+        /* recommended */
 
-           var restServices = angular.module('restServices', ['ngResource']);
+        var restServices = angular.module('restServices', ['ngResource']);
 
-            restServices.factory('rda', ['$resource',
-                     function($resource){
-                         return $resource('/api/rda/:method',{},{
-                            "add":{method:'POST',params:{method:'addMainGrid'}}
-                            "update":{method:'POST',params:{method:'updateMainGrid'}}
-                            "remove":{method:'POST',params:{method:'deleteMainGrid'}}
-                         });
-                     }]);
+         restServices.factory('rda', ['$resource',
+            function($resource){
+                return $resource('/api/rda/:method',{},{
+                   "add":{method:'POST',params:{method:'addMainGrid'}}
+                   "update":{method:'POST',params:{method:'updateMainGrid'}}
+                   "remove":{method:'POST',params:{method:'deleteMainGrid'}}
+                });
+            }]);
        ```
 
 
@@ -1332,8 +1297,74 @@ The purpose of this style guide is to provide guidance on building and improving
 **[Back to top](#table-of-contents)**
 
 ## Resolving Promises for a Controller
-### Controller Activation Promises
+
+### Promises and $q service
 ###### [Style [Y080](#style-y080)]
+  - $q is a service that helps you run functions asynchronously, and use their return values (or exceptions) when they are done processing.
+
+   *Why?*: By using `promises` you will produce more readable code, by reducing the nesting of callbacks in asynchronously calls.
+
+    ```javascript
+         /* avoid */
+         function save(exit, runTest) {
+           TestApi.update(this.form, function (res) {
+
+                if (res.status && runTest == true) {
+                   //run the test
+                   API.run({testId: res.id}, function (r) {
+                       alert('Success: ' + r);
+                   }
+                }
+
+                else
+                    alert('Failed: ' + res.reason);
+           });
+         }
+
+         function run() {
+             //call save function with indication that I wont to run the test in the end
+             save(false, true);
+         }
+     ```
+
+    ```javascript
+     /* recommended */
+     function save(exit) {
+       var deferred = $q.defer();
+
+       TestApi.update(this.form, function (res) {
+            deferred.notify('About the save');
+
+            if (res.status)
+                deferred.resolve(res.id);
+
+            else
+                 deferred.reject('Save Failed');
+       });
+
+       return deferred.promise;
+     }
+
+     function run() {
+
+         var promise = save(false);
+         promise.then(function(id) {
+
+            //run the test
+            API.run({testId: id}, function (res) {
+                alert('Success: ' + res);
+            }
+         }, function(reason) {
+                alert('Failed: ' + reason);
+         }, function(update) {
+           alert('Got notification: ' + update);
+         });
+     }
+     ```
+
+
+### Controller Activation Promises
+###### [Style [Y081](#style-y081)]
 
   - Resolve start-up logic for a controller in an `init` function.
 
@@ -1377,7 +1408,7 @@ The purpose of this style guide is to provide guidance on building and improving
   ```
 
 ### Route Resolve Promises
-###### [Style [Y081](#style-y081)]
+###### [Style [Y082](#style-y082)]
 
   - When a controller depends on a promise to be resolved before the controller is activated, resolve those dependencies in the `$routeProvider` before the controller logic is executed. If you need to conditionally cancel a route before the controller is activated, use a route resolver.
 
