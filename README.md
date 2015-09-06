@@ -1564,7 +1564,9 @@ The purpose of this style guide is to provide guidance on building and improving
 ### Feature File Names
 ###### [Style [Y121](#style-y121)]
 
-  - Use consistent names for all components following a pattern that describes the component's feature then (optionally) its type. My recommended pattern is `feature.type.js`.
+  - Use consistent names for all components following a pattern that describes the component's feature then (optionally) its type. My recommended pattern is `feature-type.js`.
+
+  - Name controller files without the word `controller` in the file name such as avengers.js instead of avengers-controller.js. All other conventions still hold using a suffix of the type. Controllers are the most common type of component so this just saves typing and is still easily identifiable.
 
     *Why?*: Provides a consistent way to quickly identify components.
 
@@ -1581,8 +1583,8 @@ The purpose of this style guide is to provide guidance on building and improving
     avengers.spec.js
 
     // services/factories
-    logger.service.js
-    logger.service.spec.js
+    logger-service.js
+    logger-service.spec.js
 
     // constants
     constants.js
@@ -1625,7 +1627,7 @@ The purpose of this style guide is to provide guidance on building and improving
      * recommended
      */
 
-    // avengers.controller.js
+    // avengers.js
     angular
         .module
         .controller('AvengersController', AvengersController);
@@ -1647,7 +1649,7 @@ The purpose of this style guide is to provide guidance on building and improving
      * recommended
      */
 
-    // logger.service.js
+    // logger-service.js
     angular
         .module
         .factory('logger', logger);
@@ -1667,7 +1669,7 @@ The purpose of this style guide is to provide guidance on building and improving
      * recommended
      */
 
-    // avenger-profile.directive.js
+    // avenger-profile-directive.js
     angular
         .module
         .directive('xxAvengerProfile', xxAvengerProfile);
@@ -1701,34 +1703,34 @@ The purpose of this style guide is to provide guidance on building and improving
         app.module.js
         app.config.js
         components/
-            calendar.directive.js
-            calendar.directive.html
-            user-profile.directive.js
-            user-profile.directive.html
+            calendar-directive.js
+            calendar-directive.html
+            user-profile-directive.js
+            user-profile-directive.html
         layout/
             shell.html
-            shell.controller.js
+            shell.js
             topnav.html
-            topnav.controller.js
+            topnav.js
         people/
             attendees.html
-            attendees.controller.js
-            people.routes.js
+            attendees.js
+            people-routes.js
             speakers.html
-            speakers.controller.js
+            speakers.js
             speaker-detail.html
-            speaker-detail.controller.js
+            speaker-detail.js
         services/
-            data.service.js
-            localstorage.service.js
-            logger.service.js
-            spinner.service.js
+            data-service.js
+            localstorage-service.js
+            logger-service.js
+            spinner-service.js
         sessions/
             sessions.html
-            sessions.controller.js
-            sessions.routes.js
+            sessions.js
+            sessions-routes.js
             session-detail.html
-            session-detail.controller.js
+            session-detail.js
     ```
 
       ![Sample App Structure](https://raw.githubusercontent.com/johnpapa/angular-styleguide/master/assets/modularity-2.png)
