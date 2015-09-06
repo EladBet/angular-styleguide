@@ -1570,8 +1570,8 @@ The purpose of this style guide is to provide guidance on building and improving
 
     *Why?*: Provides pattern matching for any automated tasks.
 
-  - Name controller files without the word `controller` in the file name such as avengers.js instead of avengers-controller.js. All other conventions still hold using a suffix of the type.
-   
+  - Name controller files without the word `controller` in the file name such as `avengers.js` instead of `avengers-controller.js`. All other conventions still hold using a suffix of the type.
+
     *Why?*: Controllers are the most common type of component so this just saves typing and is still easily identifiable.
 
 
