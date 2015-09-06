@@ -1566,11 +1566,13 @@ The purpose of this style guide is to provide guidance on building and improving
 
   - Use consistent names for all components following a pattern that describes the component's feature then (optionally) its type. My recommended pattern is `feature-type.js`.
 
-  - Name controller files without the word `controller` in the file name such as avengers.js instead of avengers-controller.js. All other conventions still hold using a suffix of the type. Controllers are the most common type of component so this just saves typing and is still easily identifiable.
-
     *Why?*: Provides a consistent way to quickly identify components.
 
     *Why?*: Provides pattern matching for any automated tasks.
+
+  - Name controller files without the word `controller` in the file name such as avengers.js instead of avengers-controller.js. All other conventions still hold using a suffix of the type.
+   
+    *Why?*: Controllers are the most common type of component so this just saves typing and is still easily identifiable.
 
 
     ```javascript
