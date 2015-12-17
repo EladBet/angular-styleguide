@@ -826,14 +826,11 @@ The purpose of this style guide is to provide guidance on building and improving
   // dataservice factory
   angular
       .module('app.core')
-      .factory('dataservice', dataservice);
+      .factory('dataservice',['$http', 'logger', function($http, logger){
 
-  dataservice.$inject = ['$http', 'logger'];
-
-  function dataservice($http, logger) {
-      return {
-          getAvengers: getAvengers
-      };
+          return {
+              getAvengers: getAvengers
+          };
 
       function getAvengers() {
           return $http.get('/api/maa')
@@ -848,7 +845,7 @@ The purpose of this style guide is to provide guidance on building and improving
               logger.error('XHR Failed for getAvengers.' + error.data);
           }
       }
-  }
+  }]);
   ```
 
     Note: The data service is called from consumers, such as a controller, hiding the implementation from the consumers, as shown below.
