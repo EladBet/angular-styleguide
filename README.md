@@ -1379,19 +1379,16 @@ The purpose of this style guide is to provide guidance on building and improving
 
   ```javascript
   /* avoid */
-  angular
-      .module('app')
-      .controller('Avengers', Avengers);
-
-  function Avengers(movieService) {
-      var vm = this;
-      // unresolved
-      vm.movies;
-      // resolved asynchronously
-      movieService.getMovies().then(function(response) {
-          vm.movies = response.movies;
-      });
-  }
+  angular.module('app')
+  .controller('Avengers', ['movieService', function(movieService) {
+     var vm = this;
+     // unresolved
+     vm.movies;
+     // resolved asynchronously
+     movieService.getMovies().then(function(response) {
+         vm.movies = response.movies;
+     });
+  }]);
   ```
 
   ```javascript
