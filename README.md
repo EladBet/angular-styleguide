@@ -1008,25 +1008,19 @@ The purpose of this style guide is to provide guidance on building and improving
   angular.module('app.widgets')
 
   /* order directive that is specific to the order module */
-  .directive('orderCalendarRange', orderCalendarRange)
+  .directive('orderCalendarRange',  function() {
+      /* implementation details */
+  })
 
   /* sales directive that can be used anywhere across the sales app */
-  .directive('salesCustomerInfo', salesCustomerInfo)
+  .directive('salesCustomerInfo',  function() {
+      /* implementation details */
+  })
 
   /* spinner directive that can be used anywhere across apps */
-  .directive('sharedSpinner', sharedSpinner);
-
-  function orderCalendarRange() {
+  .directive('sharedSpinner',  function sharedSpinner() {
       /* implementation details */
-  }
-
-  function salesCustomerInfo() {
-      /* implementation details */
-  }
-
-  function sharedSpinner() {
-      /* implementation details */
-  }
+  });
   ```
 
   ```javascript
