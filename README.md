@@ -39,10 +39,9 @@ The purpose of this style guide is to provide guidance on building and improving
 
   ```javascript
   /* avoid */
-  angular
-      .module('app', ['ngRoute'])
-      .controller('SomeController', SomeController)
-      .factory('someFactory', someFactory);
+  angular.module('app', ['ngRoute'])
+  .controller('SomeController', SomeController)
+  .factory('someFactory', someFactory);
 
   function SomeController() { }
 
@@ -1469,12 +1468,11 @@ The purpose of this style guide is to provide guidance on building and improving
 
     ```javascript
     /* avoid - not minification-safe*/
-    angular
-        .module('app')
-        .controller('Dashboard', Dashboard);
+    angular.module('app')
+    .controller('Dashboard', function (common, dataservice) {
+    });
 
-    function Dashboard(common, dataservice) {
-    }
+
     ```
 
     This code may produce mangled variables when minified and thus cause runtime errors. f
@@ -1486,12 +1484,10 @@ The purpose of this style guide is to provide guidance on building and improving
 
    ```javascript
      /* recommended */
-     angular
-         .module('app')
-         .controller('Dashboard',
-             ['$location', '$routeParams', 'common', 'dataservice',
-                 function Dashboard($location, $routeParams, common, dataservice) {}
-             ]);
+     angular.module('app')
+    .controller('Dashboard',
+        ['$location', '$routeParams', 'common', 'dataservice',  function($location, $routeParams, common, dataservice) {
+        }]);
      ```
 
 
@@ -1557,11 +1553,8 @@ The purpose of this style guide is to provide guidance on building and improving
      */
 
     // avengers.controller.js
-    angular
-        .module
-        .controller('HeroAvengersController', HeroAvengersController);
-
-    function HeroAvengersController() { }
+    angular.module
+    .controller('HeroAvengersController',  function() { });
     ```
 
 ### Controller Name Suffix
@@ -1577,11 +1570,8 @@ The purpose of this style guide is to provide guidance on building and improving
      */
 
     // avengers.js
-    angular
-        .module
-        .controller('AvengersController', AvengersController);
-
-    function AvengersController() { }
+    angular.module
+    .controller('AvengersController', function() { });
     ```
 
 ### Factory Names
@@ -1599,11 +1589,8 @@ The purpose of this style guide is to provide guidance on building and improving
      */
 
     // logger-service.js
-    angular
-        .module
-        .factory('logger', logger);
-
-    function logger() { }
+    angular.module
+    .factory('logger', function() { });
     ```
 
 ### Directive Component Names
@@ -1619,13 +1606,10 @@ The purpose of this style guide is to provide guidance on building and improving
      */
 
     // avenger-profile-directive.js
-    angular
-        .module
-        .directive('xxAvengerProfile', xxAvengerProfile);
+    angular.module
+    .directive('xxAvengerProfile', function() { });
 
     // usage is <xx-avenger-profile> </xx-avenger-profile>
-
-    function xxAvengerProfile() { }
     ```
 
 ## Application Structure LIFT Principle
@@ -1832,17 +1816,15 @@ The purpose of this style guide is to provide guidance on building and improving
 
     ```javascript
     // Constants used by the entire app
-    angular
-        .module('app.core')
-        .constant('moment', moment);
+    angular.module('app.core')
+    .constant('moment', moment);
 
     // Constants used only by the sales module
-    angular
-        .module('app.sales')
-        .constant('events', {
-            ORDER_CREATED: 'event_order_created',
-            INVENTORY_DEPLETED: 'event_inventory_depleted'
-        });
+    angular.module('app.sales')
+    .constant('events', {
+        ORDER_CREATED: 'event_order_created',
+        INVENTORY_DEPLETED: 'event_inventory_depleted'
+    });
     ```
 
 **[Back to top](#table-of-contents)**
