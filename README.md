@@ -55,17 +55,15 @@ The purpose of this style guide is to provide guidance on building and improving
   /* recommended */
 
   // app.module.js
-  angular
-      .module('app', ['ngRoute']);
+  angular.module('app', ['ngRoute']);
   ```
 
   ```javascript
   /* recommended */
 
   // someController.js
-  angular
-      .module('app')
-      .controller('SomeController', SomeController);
+  angular.module('app')
+  .controller('SomeController', SomeController);
 
   function SomeController() { }
   ```
@@ -74,9 +72,8 @@ The purpose of this style guide is to provide guidance on building and improving
   /* recommended */
 
   // someFactory.js
-  angular
-      .module('app')
-      .factory('someFactory', someFactory);
+  angular.module('app')
+  .factory('someFactory', someFactory);
 
   function someFactory() { }
   ```
@@ -113,13 +110,12 @@ The purpose of this style guide is to provide guidance on building and improving
 
   ```javascript
   /* recommended */
-  angular
-      .module('app', [
-          'ngAnimate',
-          'ngRoute',
-          'app.shared',
-          'app.dashboard'
-      ]);
+  angular.module('app', [
+      'ngAnimate',
+      'ngRoute',
+      'app.shared',
+      'app.dashboard'
+  ]);
   ```
 
 ### Getters
@@ -139,9 +135,8 @@ The purpose of this style guide is to provide guidance on building and improving
 
   ```javascript
   /* recommended */
-  angular
-      .module('app')
-      .controller('SomeController', SomeController);
+  angular.module('app')
+  .controller('SomeController', SomeController);
 
   function SomeController() { }
   ```
@@ -458,9 +453,8 @@ The purpose of this style guide is to provide guidance on building and improving
   /* avoid - when using with a route and dynamic pairing is desired */
 
   // route-config.js
-  angular
-      .module('app')
-      .config(config);
+  angular.module('app')
+  .config(config);
 
   function config($routeProvider) {
       $routeProvider
@@ -480,9 +474,8 @@ The purpose of this style guide is to provide guidance on building and improving
   /* recommended */
 
   // route-config.js
-  angular
-      .module('app')
-      .config(config);
+  angular.module('app')
+  .config(config);
 
   function config($routeProvider) {
       $routeProvider
@@ -1012,17 +1005,16 @@ The purpose of this style guide is to provide guidance on building and improving
   /* avoid */
   /* directives.js */
 
-  angular
-      .module('app.widgets')
+  angular.module('app.widgets')
 
-      /* order directive that is specific to the order module */
-      .directive('orderCalendarRange', orderCalendarRange)
+  /* order directive that is specific to the order module */
+  .directive('orderCalendarRange', orderCalendarRange)
 
-      /* sales directive that can be used anywhere across the sales app */
-      .directive('salesCustomerInfo', salesCustomerInfo)
+  /* sales directive that can be used anywhere across the sales app */
+  .directive('salesCustomerInfo', salesCustomerInfo)
 
-      /* spinner directive that can be used anywhere across apps */
-      .directive('sharedSpinner', sharedSpinner);
+  /* spinner directive that can be used anywhere across apps */
+  .directive('sharedSpinner', sharedSpinner);
 
   function orderCalendarRange() {
       /* implementation details */
@@ -1795,7 +1787,7 @@ The purpose of this style guide is to provide guidance on building and improving
           translator.initialize();
 
    }]);
-   
+
   ```
 
 **[Back to top](#table-of-contents)**
