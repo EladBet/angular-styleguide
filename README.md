@@ -1031,13 +1031,10 @@ The purpose of this style guide is to provide guidance on building and improving
    * @desc order directive that is specific to the order module at a company named Acme
    * @example <div acme-order-calendar-range></div>
    */
-  angular
-      .module('sales.order')
-      .directive('acmeOrderCalendarRange', orderCalendarRange);
-
-  function orderCalendarRange() {
+  angular.module('sales.order')
+  .directive('acmeOrderCalendarRange', function() {
       /* implementation details */
-  }
+  });
   ```
 
   ```javascript
@@ -1065,13 +1062,10 @@ The purpose of this style guide is to provide guidance on building and improving
    * @desc spinner directive that can be used anywhere across apps at a company named Acme
    * @example <div acme-shared-spinner></div>
    */
-  angular
-      .module('shared.widgets')
-      .directive('acmeSharedSpinner', sharedSpinner);
-
-  function sharedSpinner() {
-      /* implementation details */
-  }
+  angular.module('shared.widgets')
+  .directive('acmeSharedSpinner', function() {
+       /* implementation details */
+   });
   ```
 
     Note: There are many naming options for directives, especially since they can be used in narrow or wide scopes. Choose one that makes the directive and its file name distinct and clear. Some examples are below, but see the [Naming](#naming) section for more recommendations.
@@ -1102,22 +1096,19 @@ The purpose of this style guide is to provide guidance on building and improving
 
   ```javascript
   /* avoid */
-  angular
-      .module('app.widgets')
-      .directive('myCalendarRange', myCalendarRange);
+  angular.module('app.widgets')
+  .directive('myCalendarRange', function() {
+       var directive = {
+           link: link,
+           templateUrl: '/template/is/located/here.html',
+           restrict: 'C'
+       };
+       return directive;
 
-  function myCalendarRange() {
-      var directive = {
-          link: link,
-          templateUrl: '/template/is/located/here.html',
-          restrict: 'C'
-      };
-      return directive;
-
-      function link(scope, element, attrs) {
-        /* */
-      }
-  }
+       function link(scope, element, attrs) {
+         /* */
+       }
+   });
   ```
 
   ```html
@@ -1128,11 +1119,8 @@ The purpose of this style guide is to provide guidance on building and improving
 
   ```javascript
   /* recommended */
-  angular
-      .module('app.widgets')
-      .directive('myCalendarRange', myCalendarRange);
-
-  function myCalendarRange() {
+  angular.module('app.widgets')
+  .directive('myCalendarRange', function() {
       var directive = {
           link: link,
           templateUrl: '/template/is/located/here.html',
@@ -1143,7 +1131,7 @@ The purpose of this style guide is to provide guidance on building and improving
       function link(scope, element, attrs) {
         /* */
       }
-  }
+  });
   ```
 
 ### Directives and ControllerAs
@@ -1233,31 +1221,28 @@ The purpose of this style guide is to provide guidance on building and improving
   ```
 
   ```javascript
-  angular
-      .module('app')
-      .directive('myExample', myExample);
+  angular.module('app')
+  .directive('myExample', function() {
+       var directive = {
+           restrict: 'EA',
+           templateUrl: 'app/feature/example.directive.html',
+           scope: {
+               max: '='
+           },
+           controller: ExampleController,
+           controllerAs: 'vm',
+           bindToController: true
+       };
 
-  function myExample() {
-      var directive = {
-          restrict: 'EA',
-          templateUrl: 'app/feature/example.directive.html',
-          scope: {
-              max: '='
-          },
-          controller: ExampleController,
-          controllerAs: 'vm',
-          bindToController: true
-      };
+       return directive;
+   }
 
-      return directive;
-  }
-
-  function ExampleController() {
-      var vm = this;
-      vm.min = 3;
-      console.log('CTRL: vm.min = %s', vm.min);
-      console.log('CTRL: vm.max = %s', vm.max);
-  }
+   .controller('ExampleController', [ function() {
+       var vm = this;
+       vm.min = 3;
+       console.log('CTRL: vm.min = %s', vm.min);
+       console.log('CTRL: vm.max = %s', vm.max);
+   }]);
   ```
 
   ```html
