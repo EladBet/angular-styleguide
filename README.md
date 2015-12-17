@@ -1446,15 +1446,12 @@ The purpose of this style guide is to provide guidance on building and improving
   }
 
   // avengers.js
-  angular
-      .module('app')
-      .controller('Avengers', Avengers);
+  angular.module('app')
+  .controller('Avengers', ['moviesPrepService', function(moviesPrepService) {
 
-  Avengers.$inject = ['moviesPrepService'];
-  function Avengers(moviesPrepService) {
       var vm = this;
       vm.movies = moviesPrepService.movies;
-  }
+  }]);
   ```
 
     Note: The example below shows the route resolve points to a named function, which is easier to debug and easier to handle dependency injection.
