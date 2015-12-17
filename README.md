@@ -1427,9 +1427,8 @@ The purpose of this style guide is to provide guidance on building and improving
   /* better */
 
   // route-config.js
-  angular
-      .module('app')
-      .config(config);
+  angular.module('app')
+  .config(config);
 
   function config($routeProvider) {
       $routeProvider
@@ -1460,9 +1459,8 @@ The purpose of this style guide is to provide guidance on building and improving
   /* even better */
 
   // route-config.js
-  angular
-      .module('app')
-      .config(config);
+  angular.module('app')
+  .config(config);
 
   function config($routeProvider) {
       $routeProvider
@@ -1481,15 +1479,12 @@ The purpose of this style guide is to provide guidance on building and improving
   }
 
   // avengers.js
-  angular
-      .module('app')
-      .controller('Avengers', Avengers);
+  angular.module('app')
+  .controller('Avengers', ['moviesPrepService', function(moviesPrepService) {
 
-  Avengers.$inject = ['moviesPrepService'];
-  function Avengers(moviesPrepService) {
         var vm = this;
         vm.movies = moviesPrepService.movies;
-  }
+  });
   ```
     Note: The code example's dependency on `movieService` is not minification safe on its own. For details on how to make this code minification safe, see the sections on [dependency injection](#manual-annotating-for-dependency-injection) and on [minification and annotation](#minification-and-annotation).
 
