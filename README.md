@@ -1788,16 +1788,14 @@ The purpose of this style guide is to provide guidance on building and improving
     *Why?*: Code directly in a run block can be difficult to test. Placing in a factory makes it easier to abstract and mock.
 
   ```javascript
-  angular
-      .module('app')
-      .run(runBlock);
+  angular.module('app')
+  .run(['authenticator', 'translator',  function (authenticator, translator) {
 
-  runBlock.$inject = ['authenticator', 'translator'];
+          authenticator.initialize();
+          translator.initialize();
 
-  function runBlock(authenticator, translator) {
-      authenticator.initialize();
-      translator.initialize();
-  }
+   }]);
+   
   ```
 
 **[Back to top](#table-of-contents)**
