@@ -824,27 +824,26 @@ The purpose of this style guide is to provide guidance on building and improving
   /* recommended */
 
   // dataservice factory
-  angular
-      .module('app.core')
-      .factory('dataservice',['$http', 'logger', function($http, logger){
+  angular.module('app.core')
+ .factory('dataservice',['$http', 'logger', function($http, logger){
 
-          return {
-              getAvengers: getAvengers
-          };
+     return {
+         getAvengers: getAvengers
+     };
 
-      function getAvengers() {
-          return $http.get('/api/maa')
-              .then(getAvengersComplete)
-              .catch(getAvengersFailed);
+     function getAvengers() {
+         return $http.get('/api/maa')
+             .then(getAvengersComplete)
+             .catch(getAvengersFailed);
 
-          function getAvengersComplete(response) {
-              return response.data.results;
-          }
+         function getAvengersComplete(response) {
+             return response.data.results;
+         }
 
-          function getAvengersFailed(error) {
-              logger.error('XHR Failed for getAvengers.' + error.data);
-          }
-      }
+         function getAvengersFailed(error) {
+             logger.error('XHR Failed for getAvengers.' + error.data);
+         }
+     }
   }]);
   ```
 
