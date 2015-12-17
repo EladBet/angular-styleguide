@@ -853,13 +853,9 @@ The purpose of this style guide is to provide guidance on building and improving
   /* recommended */
 
   // controller calling the dataservice factory
-  angular
-      .module('app.avengers')
-      .controller('Avengers', Avengers);
+  angular.module('app.avengers')
+  .controller('Avengers', ['dataservice', 'logger' function(dataservice, logger) {
 
-  Avengers.$inject = ['dataservice', 'logger'];
-
-  function Avengers(dataservice, logger) {
       var vm = this;
       vm.avengers = [];
 
@@ -878,7 +874,7 @@ The purpose of this style guide is to provide guidance on building and improving
                   return vm.avengers;
               });
       }
-  }
+  }]);
   ```
 
 
