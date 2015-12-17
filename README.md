@@ -1178,12 +1178,10 @@ The purpose of this style guide is to provide guidance on building and improving
   ```
 
   ```javascript
-  angular
-      .module('app')
-      .directive('myExample', myExample);
+  angular.module('app')
+  .directive('myExample', function(){
 
-  function myExample() {
-      var directive = {
+      return {
           restrict: 'EA',
           templateUrl: 'app/feature/example.directive.html',
           scope: {
@@ -1195,7 +1193,6 @@ The purpose of this style guide is to provide guidance on building and improving
           bindToController: true // because the scope is isolated
       };
 
-      return directive;
 
       function linkFunc(scope, el, attr, ctrl) {
           console.log('LINK: scope.min = %s *** should be undefined', scope.min);
@@ -1203,12 +1200,10 @@ The purpose of this style guide is to provide guidance on building and improving
           console.log('LINK: scope.vm.min = %s', scope.vm.min);
           console.log('LINK: scope.vm.max = %s', scope.vm.max);
       }
-  }
+  }])
 
-  ExampleController.$inject = ['$scope'];
+   .controller('ExampleController', ['$scope', function($scope) {
 
-  function ExampleController($scope) {
-      // Injecting $scope just for comparison
       var vm = this;
 
       vm.min = 3;
@@ -1217,7 +1212,7 @@ The purpose of this style guide is to provide guidance on building and improving
       console.log('CTRL: $scope.vm.max = %s', $scope.vm.max);
       console.log('CTRL: vm.min = %s', vm.min);
       console.log('CTRL: vm.max = %s', vm.max);
-  }
+  }]);
   ```
 
   ```html
