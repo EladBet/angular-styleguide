@@ -1,0 +1,19 @@
+{
+  "name": "@playbuzz/angular-styleguide",
+  "version": "1.0.1",
+  "description": "*Quiliup style guide for the front end developers team, by [@EladBet](//il.linkedin.com/pub/elad-betite/84/981/73)*",
+  "main": "README.md",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EladBet/angular-styleguide.git"
+  },
+  "author": "EladBetite",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EladBet/angular-styleguide/issues"
+  },
+  "homepage": "https://github.com/EladBet/angular-styleguide#readme"
+}

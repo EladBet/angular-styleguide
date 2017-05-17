@@ -1,6 +1,6 @@
-# Quiliup Style Guide
+# Story Style Guide
 
-*Quiliup style guide for the front end developers team, by [@EladBet](//il.linkedin.com/pub/elad-betite/84/981/73)*
+*Story beta style guide for the front end developers team, by [@EladBet](//il.linkedin.com/pub/elad-betite/84/981/73)*
 
  These styles are based on [angular-styleguide](//github.com/johnpapa/angular-styleguide.git)  by [@John_Papa](//twitter.com/john_papa) and my development experience with [Angular](//angularjs.org),  and working in a team.
 
