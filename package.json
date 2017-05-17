@@ -1,6 +1,6 @@
 {
   "name": "@playbuzz/angular-styleguide",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "*Quiliup style guide for the front end developers team, by [@EladBet](//il.linkedin.com/pub/elad-betite/84/981/73)*",
   "main": "README.md",
   "scripts": {
